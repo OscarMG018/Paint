@@ -18,8 +18,8 @@ Fes servir l'exemple 0801 com a base inicial, veuràs que l'exemple manté una l
 
 S'ha de poder:
 
-- Decidir el gruix de les linies i contorns
-- Decidir el color de les línies i contorns
+- Decidir el gruix de les linies i contorns X
+- Decidir el color de les línies i contorns X
 - Decidir el color dels emplenats dels polígons
 - Decidir els colors i tipus de gradient d'emplenat dels polígons
 

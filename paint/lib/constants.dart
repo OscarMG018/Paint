@@ -5,7 +5,7 @@ const tools = [
     "function": {
       "name": "draw_circle",
       "description":
-          "Dibuixa un cercle amb un radi determinat, si falta el radi posar-ne un de 10 per defecte, si el radi ha de ser aletori posar-ne un aleatori entre 10 i 25",
+          "A function that draws a circle with a given center and radius @param {number} x @param {number} y @param {number} radius",
       "parameters": {
         "type": "object",
         "properties": {
@@ -22,7 +22,7 @@ const tools = [
     "function": {
       "name": "draw_line",
       "description":
-          "Dibuixa una línia entre dos punts, si no s'especifica la posició escull els punts entre x=10, y=10 i x=100, y=100",
+          "A function that draws a line with a given start and end coordinates, with the given color and stroke width, all color values go from 0.0 to 1.0 @param {number} startX @param {number} startY @param {number} endX @param {number} endY @param {number} width @param {object} color{ @param {number} r @param {number} g @param {number} b @Optional @param {number} a}",
       "parameters": {
         "type": "object",
         "properties": {
@@ -34,9 +34,9 @@ const tools = [
           "color": {
             "type": "object",
             "properties": {
-              "r": { "type": "integer", "minimum": 0, "maximum": 255 },
-              "g": { "type": "integer", "minimum": 0, "maximum": 255 },
-              "b": { "type": "integer", "minimum": 0, "maximum": 255 },
+              "r": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "g": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "b": { "type": "integer", "minimum": 0, "maximum": 1 },
               "a": { "type": "number", "minimum": 0, "maximum": 1 }
             },
             "required": ["r", "g", "b"]
@@ -51,7 +51,7 @@ const tools = [
     "function": {
       "name": "draw_rectangle",
       "description":
-          "Dibuixa un rectangle definit per les coordenades superior-esquerra i inferior-dreta",
+          "A function that draws a rectangle with a given top-left and bottom-right coordinates, border and fill colors, and optional gradient. Colors are RGB values (0-1) with optional alpha (0-1). For gradient, specify type ('linear' or 'radial') and an array of colors. Linear gradient goes from top-left to bottom-right, radial gradient starts from center. @param {number} topLeftX @param {number} topLeftY @param {number} bottomRightX @param {number} bottomRightY @param {object} borderColor @param {object} fillColor @param {number} borderWidth @param {object} gradient",
       "parameters": {
         "type": "object",
         "properties": {
@@ -59,8 +59,151 @@ const tools = [
           "topLeftY": {"type": "number"},
           "bottomRightX": {"type": "number"},
           "bottomRightY": {"type": "number"},
+          "borderColor": {
+            "type": "object",
+            "properties": {
+              "r": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "g": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "b": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "a": { "type": "number", "minimum": 0, "maximum": 1 }
+            },
+            "required": ["r", "g", "b"]
+          },
+          "fillColor": {
+            "type": "object",
+            "properties": {
+              "r": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "g": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "b": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "a": { "type": "number", "minimum": 0, "maximum": 1 }
+            },
+            "required": ["r", "g", "b"]
+          },
+          "borderWidth": {"type": "number"},
+          "gradient": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["linear", "radial"]
+              },
+              "colors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "r": { "type": "integer", "minimum": 0, "maximum": 1 },
+                    "g": { "type": "integer", "minimum": 0, "maximum": 1 },
+                    "b": { "type": "integer", "minimum": 0, "maximum": 1 },
+                    "a": { "type": "number", "minimum": 0, "maximum": 1 }
+                  }
+                }
+              }
+            },
+            "required": ["type", "colors"]
+          }
         },
         "required": ["topLeftX", "topLeftY", "bottomRightX", "bottomRightY"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "draw_circle",
+      "description":
+          "A function that draws a circle with a given center and radius, border and fill colors, and optional gradient. Colors are RGB values (0-1) with optional alpha (0-1). For gradient, specify type ('linear' or 'radial') and an array of colors. Linear gradient goes from top-left to bottom-right, radial gradient starts from center and goes outward. @param {number} x @param {number} y @param {number} radius @param {object} borderColor @param {object} fillColor @param {number} borderWidth @param {object} gradient",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "x": {"type": "number"},
+          "y": {"type": "number"},
+          "radius": {"type": "number"},
+          "borderColor": {
+            "type": "object",
+            "properties": {
+              "r": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "g": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "b": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "a": { "type": "number", "minimum": 0, "maximum": 1 }
+            },
+            "required": ["r", "g", "b"]
+          },
+          "fillColor": {
+            "type": "object",
+            "properties": {
+              "r": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "g": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "b": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "a": { "type": "number", "minimum": 0, "maximum": 1 }
+            },
+            "required": ["r", "g", "b"]
+          },
+          "borderWidth": {"type": "number"},
+          "gradient": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["linear", "radial"]
+              },
+              "colors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "r": { "type": "integer", "minimum": 0, "maximum": 1 },
+                    "g": { "type": "integer", "minimum": 0, "maximum": 1 },
+                    "b": { "type": "integer", "minimum": 0, "maximum": 1 },
+                    "a": { "type": "number", "minimum": 0, "maximum": 1 }
+                  }
+                }
+              }
+            },
+            "required": ["type", "colors"]
+          }
+        },
+        "required": ["x", "y", "radius"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "draw_text",
+      "description":
+          "A function that draws text with customizable font properties. Colors are RGB values (0-1) with optional alpha (0-1). @param {string} text @param {number} x @param {number} y @param {object} color @param {number} fontSize @param {string} fontFamily @param {string} fontStyle @param {string} fontWeight",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string"},
+          "x": {"type": "number"},
+          "y": {"type": "number"},
+          "color": {
+            "type": "object",
+            "properties": {
+              "r": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "g": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "b": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "a": { "type": "number", "minimum": 0, "maximum": 1 }
+            },
+            "required": ["r", "g", "b"]
+          },
+          "fontSize": {"type": "number"},
+          "fontFamily": {
+            "type": "string",
+            "enum": ["Roboto", "Arial", "Helvetica", "Times New Roman", "Courier"]
+          },
+          "fontStyle": {
+            "type": "string",
+            "enum": ["normal", "italic"]
+          },
+          "fontWeight": {
+            "type": "string",
+            "enum": ["normal", "bold"]
+          }
+        },
+        "required": ["text", "x", "y"]
       }
     }
   }
